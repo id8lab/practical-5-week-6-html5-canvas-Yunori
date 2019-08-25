@@ -1,8 +1,8 @@
 window.onload = function() {
-  var canvas, context
-  var height, width
-  canvas = document.getElementById('canvas')
-  context = canvas.getContext('2d')
+  var canvas, context;
+  var height, width;
+  canvas = document.getElementById('canvas');
+  context = canvas.getContext('2d');
 
   var rect = {
     speed: 0,
@@ -13,45 +13,43 @@ window.onload = function() {
     xDir: '-',
     yDir: '-',
     speed: 5
+  };
+
+  function draw() {
+    context.fillStyle = 'rgb(0,0,255)';
+    context.fillRect(rect.x, rect.y, 100, 50);
+    context.fillStyle = 'rgba(255, 0, 0, 0.5)';
+    context.beginPath();
+    context.arc(120, 150, 10, 0, 2 * Math.PI, false);
+    context.fill();
   }
 
-  function move() {
-    rect.xDir = (rect.x + rect.xSize) >= width ? '-' :
-      rect.x <= 0 ? '+' :
-      rect.xDir;
-    rect.yDir = (rect.y + rect.ySize) >= height ? '-' :
-      rect.y <= 0 ? '+' :
-      rect.yDir;
+  function move(obj) {
+    obj.xDir = (obj.x + obj.xSize) >= width ? '-' :
+      obj.x <= 0 ? '+' :
+      obj.xDir;
+    obj.yDir = (obj.y + obj.ySize) >= height ? '-' :
+      obj.y <= 0 ? '+' :
+      obj.yDir;
 
-    rect.x = rect.xDir == '+' ? rect.x += rect.speed : rect.x -= rect.speed;
-    rect.y = rect.yDir == '+' ? rect.y += rect.speed : rect.y -= rect.speed;
+    obj.x = obj.xDir == '+' ? obj.x += obj.speed : obj.x -= obj.speed;
+    obj.y = obj.yDir == '+' ? obj.y += obj.speed : obj.y -= obj.speed;
   }
 
   function main() {
-    function draw() {
-      context.fillStyle = 'rgb(0,0,255)'
-      context.fillRect(rect.x, rect.y, 100, 50)
-      context.fillStyle = 'rgba(255, 0, 0, 0.5)'
-      context.beginPath()
-      context.arc(120, 150, 10, 0, 2 * Math.PI, false)
-      context.fill()
-    }
+    height = canvas.clientHeight;
+    width = canvas.clientWidth;
+    context.canvas.width = window.innerWidth;
+    context.canvas.height = window.innerHeight;
 
-    height = canvas.clientHeight
-    width = canvas.clientWidth
+    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
-    context.canvas.width = window.innerWidth
-    context.canvas.height = window.innerHeight
-
-    context.clearRect(0, 0, context.canvas.width, context.canvas.height)
-
-    context.lineWidth = 7
-
+    move(rect);
     draw();
-    move();
 
     window.requestAnimationFrame(main);
   }
 
+  draw(); //init
   main();
 }
